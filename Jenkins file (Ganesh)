@@ -10,10 +10,11 @@ git branch: 'development', credentialsId: '598fcead-c7c5-457a-bb52-e9661b44488f'
 stage('Build into Maven'){
 sh "${mavenHome}/bin/mvn clean package"    
 }
-/*
+
 stage('Execute Report into sonarQube'){
 sh "${mavenHome}/bin/mvn sonar:sonar"    
 }
+/*
 stage('Upload Artifacts into Artifacts repo (Nexus)'){
 sh "${mavenHome}/bin/mvn deploy"    
 }  
