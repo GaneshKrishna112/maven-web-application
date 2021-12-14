@@ -1,36 +1,32 @@
 node
 {
-def mavenHome=tool name:"maven 3.8.3"
-
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '7', daysToKeepStr: '', numToKeepStr: '7')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
-
-stage('Checkout Code'){    
-git branch: 'development', credentialsId: '598fcead-c7c5-457a-bb52-e9661b44488f', url: 'https://github.com/GaneshKrishna112/maven-web-application.git'
+def mavenHome=tool name:"maven 3.8.4" 
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+stage('Checkout Code'){
+stage('Build in maven'){
+sh "${mavenHome}/bin/mvn clean package"
 }
-stage('Build into Maven'){
-sh "${mavenHome}/bin/mvn clean package"    
-}
-
-stage('Execute Report into sonarQube'){
-sh "${mavenHome}/bin/mvn sonar:sonar"    
+stage('Build in Sonarqube Report'){
+sh "${mavenHome}/bin/mvn sonar:sonar"
 }
 /*
-stage('Upload Artifacts into Artifacts repo (Nexus)'){
+stage('Upload Artifacts into Nexus'){
 sh "${mavenHome}/bin/mvn deploy"    
-}  
-stage('Deploy Application into Tomcat'){
-sshagent(['b44ba8bd-ad27-4092-943f-ffebb5a9e5d6']) {
-sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.127.133.125:/opt/apache-tomcat-9.0.55/webapps"    
 }
+stage('Deploy Application into Tomcat Server'){
+sshagent(['e0acec9c-a973-4e33-a92d-4b50d5a06f90']) {
+sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.127.133.125:/opt/apache-tomcat-9.0.55/webapps"
 }
+}    
 stage('Send Email Notification'){
 emailext body: '''Build Over
 
 
+
 Regards:-
-Ganeshtechsoft,
-Ph no:-9515262127.''', subject: 'Build over', to: 'ganiraj112@gmail.com'
+Ganeshtechsoft
+Ph no:-9515262127''', subject: 'Build over', to: 'ganiraj112@gmail.com'
+}
 }
 */
 }
-
