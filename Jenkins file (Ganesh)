@@ -6,6 +6,7 @@ stage('Checkout Code'){
 stage('Build in maven'){
 sh "${mavenHome}/bin/mvn clean package"
 }
+}
 stage('Build in Sonarqube Report'){
 sh "${mavenHome}/bin/mvn sonar:sonar"
 }
@@ -27,6 +28,5 @@ Regards:-
 Ganeshtechsoft
 Ph no:-9515262127''', subject: 'Build over', to: 'ganiraj112@gmail.com'
 }
-
 */
 }
